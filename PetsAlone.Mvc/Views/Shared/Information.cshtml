@@ -1,0 +1,11 @@
+﻿@model InfoViewModel
+@{ ViewData["Title"] = Model.Title; }
+
+
+@if (Model.IsMessageEmpty)
+{
+<h2 class="text-danger">An error occurred while processing your request.</h2> }
+else
+{
+
+<h2 class="@Model.CssClass">@Model.Message</h2>}

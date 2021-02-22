@@ -1,0 +1,56 @@
+﻿@model IEnumerable<PetsAlone.Mvc.Models.PetViewModel>
+@using System.Linq;
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>My pet is alone somewhere, can you help to find it?</h1>
+
+<p>
+    <a asp-action="Create">Find my pet please?</a>
+</p>
+@if (Model.Any())
+{
+
+    <p>Filter by Pet Type</p>
+    <div class="row">
+        <div class="col-md-4">
+            <form id="filterForm" asp-action="index">
+                <div class="control-group">
+                    <label asp-for="@Model.First().PetType" class="control-label"></label>
+                    @Html.DropDownList("pettype", @Model.First().PetTypes, "Select-Type", new { @class = "form-control" })
+                    <input type="submit" value="Find" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="card-deck">
+        @foreach (var item in Model)
+        {
+            var photoPath = "~/images/" + (item.PhotoPath ?? "noimage.jpg");
+            <div class="card m-3" style="min-width: 18rem; max-width:30.5%;">
+                <div class="card-header">
+                    <h3>@item.Name</h3>
+                </div>
+
+                <img class="card-img-top imageThumbnail" src="@photoPath"
+                     asp-append-version="true" />
+                <div class="card-body">
+                    @Html.DisplayNameFor(model => model.PetType) : @Html.DisplayFor(modelItem => item.PetType) <br />
+                    @Html.DisplayNameFor(model => model.MissingSince) : @Html.DisplayFor(modelItem => item.MissingSince)
+                </div>
+                <div class="card-footer text-center">
+                    @Html.ActionLink("Edit", "Edit", new { id = item.Id }, new { @class = "btn btn-primary m-1" })
+                    @Html.ActionLink("Details", "Details", new { id = item.Id }, new { @class = "btn btn-primary m-1" })
+                    @*@Html.ActionLink("Delete", "Delete", new { id = item.Id }, new { @class = "btn btn-danger m-1" })*@
+                </div>
+            </div>
+        }
+    </div>
+
+}
+else
+{
+    <h1 class="text-center">Sorry.. No pet found. Click home to start again.</h1>
+}
